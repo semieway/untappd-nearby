@@ -1,0 +1,15 @@
+{
+  "name": "semieway/untappd-nearby",
+  "description": "Untappd latest unique beer check-ins in nearby location",
+  "authors": [
+    {
+      "name": "Alex Sirotin",
+      "email": "semieway@gmail.com"
+    }
+  ],
+  "require": {
+    "guzzlehttp/guzzle": "^7.2",
+    "swiftmailer/swiftmailer": "^6.2",
+    "twig/twig": "^3.3"
+  }
+}
