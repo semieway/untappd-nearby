@@ -22,7 +22,7 @@ class Api
         ]);
     }
 
-    public function fetchCheckins()
+    public function fetchCheckins(): array
     {
         $response = $this->client->request('GET', 'thepub/local', [
             'query' => [
@@ -35,6 +35,21 @@ class Api
         ]);
 
         $data = json_decode($response->getBody(), true);
-        var_dump($data); exit;
+
+        return $data['response']['checkins']['items'];
+    }
+
+    public function getBeerInfo(string $beerId): array
+    {
+        $response = $this->client->request('GET', 'beer/info/'.$beerId, [
+           'query' => [
+               'client_id' => $this->clientId,
+               'client_secret' => $this->clientSecret,
+           ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        return $data['response']['beer'];
     }
 }
