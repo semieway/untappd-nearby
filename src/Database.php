@@ -11,7 +11,7 @@ class Database
 
     public function __construct()
     {
-        $this->connection = getenv('DATABASE_URL');
+        $this->connection = pg_connect(getenv('DATABASE_URL'));
     }
 
     public function getWantedIds()
