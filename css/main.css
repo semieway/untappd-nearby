@@ -14,16 +14,45 @@ body {
     padding-left: 50px;
 }
 
+@media (max-width: 768px) {
+    .checkins {
+        padding-left: 0;
+    }
+}
+
 .checkin {
     display: flex;
-    margin-top: 15px;
+    margin-top: 20px;
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+@media (max-width: 768px) {
+    .checkin {
+        flex-direction: column;
+    }
+}
+
+.wrapper {
+    display: flex;
+    width: 400px;
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        width: auto;
+    }
 }
 
 .beer-info {
     display: flex;
     flex-direction: column;
-    width: 300px;
     margin-left: 20px;
+}
+
+@media (max-width: 768px) {
+    .beer-info {
+        width: auto;
+    }
 }
 
 .beer-name {
@@ -56,8 +85,21 @@ body {
     color: #808080;
 }
 
+@media (max-width: 768px) {
+    .beer-style {
+        margin-bottom: 5px;
+    }
+}
+
 .beer-label {
     display: inline-block;
+    padding-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .beer-label {
+        padding-bottom: 10px;
+    }
 }
 
 .beer-label img {
@@ -68,7 +110,13 @@ body {
 
 .beer-rating {
     margin-top: 4px;
-    margin-left: 30px;
+    margin-left: 60px;
+}
+
+@media (max-width: 768px) {
+    .beer-rating {
+        margin-left: 100px;
+    }
 }
 
 .beer-meta {
@@ -76,6 +124,14 @@ body {
     flex-direction: column;
     width: 180px;
     margin-left: 60px;
+}
+
+@media (max-width: 768px) {
+    .beer-meta {
+        width: auto;
+        margin-left: 100px;
+        margin-top: 10px;
+    }
 }
 
 .beer-meta p {
@@ -101,8 +157,31 @@ body {
 }
 
 .beer-checkin-time {
-    margin-left: 30px;
+    margin-left: 60px;
+    padding-top: 10px;
     color: #808080;
+}
+
+@media (max-width: 768px) {
+    .beer-checkin-time {
+        margin-left: 100px;
+        padding-bottom: 10px;
+    }
+}
+
+.beer-checkin-time .fa-clock {
+    display: block;
+    text-align: center;
+    padding-bottom: 5px;
+    color: #e5e5e5;
+}
+
+@media (max-width: 768px) {
+    .beer-checkin-time .fa-clock {
+        display: initial;
+        text-align: left;
+        padding-right: 3px;
+    }
 }
 
 .caps {
@@ -119,6 +198,14 @@ body {
     padding-top: 8px;
     text-align: center;
     color: #808080;
+}
+
+@media (max-width: 768px) {
+    .beer-rating-count {
+        font-size: 14px;
+        padding-top: 0;
+        text-align: left;
+    }
 }
 
 .cap {
