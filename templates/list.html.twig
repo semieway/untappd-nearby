@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<ul>
+    {% for checkin in checkins %}
+    <li>
+        {{ checkin.name }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
