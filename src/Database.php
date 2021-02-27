@@ -14,6 +14,12 @@ class Database
         $this->connection = getenv('DATABASE_URL');
     }
 
+    public function getWantedIds()
+    {
+        $query = pg_query($this->connection, 'SELECT id FROM notifications');
+        return pg_fetch_all($query, PGSQL_ASSOC);
+    }
+
     public function getCheckins($page = 1)
     {
         $offset = ($page - 1) * 25;
