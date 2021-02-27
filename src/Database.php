@@ -14,9 +14,10 @@ class Database
         $this->connection = getenv('DATABASE_URL');
     }
 
-    public function getCheckins($page)
+    public function getCheckins($page = 1)
     {
-        $offset = ($page - 1) * 5;
+        $offset = ($page - 1) * 25;
+
         $result = pg_prepare($this->connection, 'get_checkins','
 SELECT 
     b.id, 
@@ -28,8 +29,8 @@ SELECT
     b.abv, 
     b.ibu,
     b.created, 
+    br.id AS brewery_id,
     br.name AS brewery_name,
-    br.page_url AS brewery_page_url,
     l.name AS location_name,
     l.address AS location_address
 FROM
@@ -40,12 +41,18 @@ LEFT JOIN
     breweries AS br ON b.brewery_id = br.id
 ORDER BY 
     created DESC 
-LIMIT 5 
+LIMIT 25 
 OFFSET $1;
 ');
         $result = pg_execute($this->connection, 'get_checkins', [$offset]);
 
         return pg_fetch_all($result, PGSQL_ASSOC);
+    }
+
+    public function getTotalBeersCount()
+    {
+        $query = pg_query($this->connection, 'SELECT COUNT(id) FROM beers');
+        return pg_fetch_all($query, PGSQL_ASSOC);
     }
 
     public function insertCheckins(array $checkins, Api $client): void
@@ -63,7 +70,11 @@ OFFSET $1;
             $beer['name'] = $checkin['beer']['beer_name'];
             $beer['brewery_id'] = $checkin['brewery']['brewery_id'];
             $beer['location_id'] = $checkin['venue']['venue_id'];
-            $beer['label'] = $checkin['beer']['beer_label_hd'];
+            if (!empty($checkin['beer']['beer_label_hd'])) {
+                $beer['label'] = $checkin['beer']['beer_label_hd'];
+            } else {
+                $beer['label'] = $checkin['beer']['beer_label'];
+            }
 
             $beerInfo = $client->getBeerInfo($beer['id']);
             $beer['rating'] = $beerInfo['rating_score'];
@@ -74,7 +85,6 @@ OFFSET $1;
 
             $brewery['id'] = $beerInfo['brewery']['brewery_id'];
             $brewery['name'] = $beerInfo['brewery']['brewery_name'];
-            $brewery['page_url'] = $beerInfo['brewery']['brewery_page_url'];
 
             $location['id'] = $checkin['venue']['venue_id'];
             $location['name'] = $checkin['venue']['venue_name'];
@@ -84,6 +94,41 @@ OFFSET $1;
             pg_insert($this->connection, 'locations', $location);
             pg_insert($this->connection, 'beers', $beer);
         }
+    }
+
+    public function beerSearch($search = '')
+    {
+        $result = pg_prepare($this->connection, 'beer_search','
+SELECT 
+    b.id, 
+    b.name,
+    b.rating, 
+    b.rating_count, 
+    b.label, 
+    b.style, 
+    b.abv, 
+    b.ibu,
+    b.created, 
+    br.id AS brewery_id,
+    br.name AS brewery_name,
+    l.name AS location_name,
+    l.address AS location_address
+FROM
+    beers AS b 
+LEFT JOIN
+    locations AS l ON b.location_id = l.id
+LEFT JOIN 
+    breweries AS br ON b.brewery_id = br.id
+WHERE
+    LOWER(b.name) LIKE LOWER($1)
+OR  LOWER(br.name) LIKE LOWER($1)
+ORDER BY 
+    created DESC
+');
+
+        $result = pg_execute($this->connection, 'beer_search', ['%'.$search.'%']);
+
+        return pg_fetch_all($result, PGSQL_ASSOC);
     }
 
     public function time_elapsed_string($datetime, $full = false) {
