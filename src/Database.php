@@ -138,8 +138,8 @@ ORDER BY
     }
 
     public function time_elapsed_string($datetime, $full = false) {
-        $now = new DateTime;
-        $ago = new DateTime($datetime);
+        $now = new DateTime('now', new \DateTimeZone('Asia/Yekaterinburg'));
+        $ago = new DateTime($datetime, new \DateTimeZone('Asia/Yekaterinburg'));
         $diff = $now->diff($ago);
 
         $diff->w = floor($diff->d / 7);
