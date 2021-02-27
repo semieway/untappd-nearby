@@ -23,18 +23,24 @@ body {
 .checkin {
     display: flex;
     margin-top: 20px;
+    padding-bottom: 20px;
+}
+
+.checkin:not(:last-child) {
     border-bottom: 1px dashed #e5e5e5;
 }
 
 @media (max-width: 768px) {
     .checkin {
         flex-direction: column;
+        padding-bottom: 5px;
     }
 }
 
 .wrapper {
     display: flex;
     width: 400px;
+    overflow: hidden;
 }
 
 @media (max-width: 768px) {
@@ -83,6 +89,7 @@ body {
 .beer-style {
     font-size: 14px;
     color: #808080;
+    margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
@@ -93,7 +100,6 @@ body {
 
 .beer-label {
     display: inline-block;
-    padding-bottom: 20px;
 }
 
 @media (max-width: 768px) {
@@ -157,6 +163,7 @@ body {
 }
 
 .beer-checkin-time {
+    width: 100px;
     margin-left: 60px;
     padding-top: 10px;
     color: #808080;
@@ -164,6 +171,7 @@ body {
 
 @media (max-width: 768px) {
     .beer-checkin-time {
+        width: auto;
         margin-left: 100px;
         padding-bottom: 10px;
     }
@@ -174,6 +182,17 @@ body {
     text-align: center;
     padding-bottom: 5px;
     color: #e5e5e5;
+}
+
+.beer-checkin-time time {
+    display: block;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .beer-checkin-time time {
+        display: initial;
+    }
 }
 
 @media (max-width: 768px) {
@@ -254,4 +273,26 @@ body {
 
 .cap-100 {
     background-image: url("../img/cap-100@2x.png");
+}
+
+.pagination {
+    margin-top: 50px;
+    padding-left: 50px;
+}
+
+.page-item.active .page-link {
+    background-color: #ff9933;
+    border-color: #ff9933;
+}
+
+.page-item.disabled {
+    display: none;
+}
+
+.page-link {
+    color: black;
+}
+
+.page-link:hover {
+    color: black;
 }

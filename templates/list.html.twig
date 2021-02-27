@@ -1,6 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
+{% if count > 25 and current > 1 %}
+    <ul class="pagination">
+        <li class="page-item {% if current == 1 %}disabled{% endif %}">
+            <a class="page-link" {% if current == 1 %}tabindex="-1" {% else %} href="/" {% endif %}>← First</a>
+        </li>
+        <li class="page-item {% if current == 1 %}active{% endif %}"><a class="page-link" href="/?page={% if current == 1 %}1{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 2 }}{% else %}{{ current - 1 }}{% endif %}">{% if current == 1 %}1{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 2 }}{% else %}{{ current - 1 }}{% endif %}</a></li>
+        <li class="page-item {% if current > 1 and count - current * 25 > 0 or current > 1 and count < 50 %}active {% endif %}">
+            <a class="page-link" href="/?page={% if current == 1 %}2{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 1 }}{% else %}{{ current }}{% endif %}">{% if current == 1 %}2{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 1 }}{% else %}{{ current }}{% endif %}<span class="sr-only">(current)</span></a>
+        </li>
+        {% if count > 50 %}
+            <li class="page-item {% if count - current * 25 < 0 %}active{% endif %}"><a class="page-link" href="/?page={% if current == 1 %}3{% elseif count - current * 25 < 0 %}{{ current }}{% else %}{{ current + 1 }}{% endif %}">{% if current == 1 %}3{% elseif count - current * 25 < 0 %}{{ current }}{% else %}{{ current + 1 }}{% endif %}</a></li>
+        {% endif %}
+        <li class="page-item {% if count - current * 25 < 0 %}disabled{% endif %}">
+            <a class="page-link" href="/?page={{ (count / 25)|round(0, 'ceil') }}">Last →</a>
+        </li>
+    </ul>
+{% endif %}
 <ul class="checkins">
     {% for checkin in checkins %}
     <li class="checkin">
@@ -10,7 +27,7 @@
         </div>
         <div class="beer-info">
             <p class="beer-name"><a href="https://untappd.com/beer/{{ checkin.id }}" class="beer-link" target="_blank">{{ checkin.name }}</a></p>
-            <p class="beer-brewery"><a href="https://untappd.com{{ checkin.brewery_page_url }}" class="brewery-link" target="_blank">{{ checkin.brewery_name }}</a></p>
+            <p class="beer-brewery"><a href="https://untappd.com/brewery/{{ checkin.brewery_id }}" class="brewery-link" target="_blank">{{ checkin.brewery_name }}</a></p>
             <p class="beer-style">{{ checkin.style }}</p>
         </div>
         </div>
@@ -23,12 +40,14 @@
                 <div class="cap"></div>
             </div>
             <div class="beer-rating-value">({{ checkin.rating|number_format(2) }})</div>
-            <div class="beer-rating-count">{{ checkin.rating_count }} Ratings</div>
+            <div class="beer-rating-count">{{ checkin.rating_count|number_format(0, '.', ',') }} Ratings</div>
         </div>
         <div class="beer-meta">
             <p class="beer-abv">{{ checkin.abv|number_format(1) }}% ABV</p>
             <p class="beer-ibu">{{ checkin.ibu|number_format(0) }} IBU</p>
+            {% if checkin.location_name %}
             <p class="beer-location" title="{{ checkin.location_address }}">{{ checkin.location_name }}</p>
+            {% endif %}
         </div>
         <div class="beer-checkin-time">
             <i class="far fa-clock"></i>
@@ -37,4 +56,21 @@
     </li>
     {% endfor %}
 </ul>
+{% if count > 25 and search is empty %}
+    <ul class="pagination">
+        <li class="page-item {% if current == 1 %}disabled{% endif %}">
+            <a class="page-link" {% if current == 1 %}tabindex="-1" {% else %} href="/" {% endif %}>← First</a>
+        </li>
+        <li class="page-item {% if current == 1 %}active{% endif %}"><a class="page-link" href="/?page={% if current == 1 %}1{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 2 }}{% else %}{{ current - 1 }}{% endif %}">{% if current == 1 %}1{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 2 }}{% else %}{{ current - 1 }}{% endif %}</a></li>
+        <li class="page-item {% if current > 1 and count - current * 25 > 0 or current > 1 and count < 50 %}active {% endif %}">
+            <a class="page-link" href="/?page={% if current == 1 %}2{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 1 }}{% else %}{{ current }}{% endif %}">{% if current == 1 %}2{% elseif count - current * 25 < 0 and count > 50 %}{{ current - 1 }}{% else %}{{ current }}{% endif %}<span class="sr-only">(current)</span></a>
+        </li>
+        {% if count > 50 %}
+            <li class="page-item {% if count - current * 25 < 0 %}active{% endif %}"><a class="page-link" href="/?page={% if current == 1 %}3{% elseif count - current * 25 < 0 %}{{ current }}{% else %}{{ current + 1 }}{% endif %}">{% if current == 1 %}3{% elseif count - current * 25 < 0 %}{{ current }}{% else %}{{ current + 1 }}{% endif %}</a></li>
+        {% endif %}
+        <li class="page-item {% if count - current * 25 < 0 %}disabled{% endif %}">
+            <a class="page-link" href="/?page={{ (count / 25)|round(0, 'ceil') }}">Last →</a>
+        </li>
+    </ul>
+{% endif %}
 {% endblock %}
