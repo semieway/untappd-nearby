@@ -1,0 +1,170 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        text-align: center;
+    }
+}
+
+.checkins {
+    list-style: none;
+    margin-top: 40px;
+    padding-left: 50px;
+}
+
+.checkin {
+    display: flex;
+    margin-top: 15px;
+}
+
+.beer-info {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin-left: 20px;
+}
+
+.beer-name {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.beer-name a {
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+}
+
+.beer-brewery {
+    margin-bottom: 2px;
+}
+
+.beer-brewery a {
+    font-size: 16px;
+    text-decoration: none;
+    color: #cc6600;
+}
+
+.beer-brewery a:hover {
+    color: #ff9933;
+}
+
+.beer-style {
+    font-size: 14px;
+    color: #808080;
+}
+
+.beer-label {
+    display: inline-block;
+}
+
+.beer-label img {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+}
+
+.beer-rating {
+    margin-top: 4px;
+    margin-left: 30px;
+}
+
+.beer-meta {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    margin-left: 60px;
+}
+
+.beer-meta p {
+    margin-bottom: 4px;
+    color: #808080;
+}
+
+.beer-location {
+    position: relative;
+    padding-left: 20px;
+}
+
+.beer-location::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    left: 0;
+    background-image: url("../img/pin.svg");
+    background-size: cover;
+    width: 17px;
+    height: 17px;
+}
+
+.beer-checkin-time {
+    margin-left: 30px;
+    color: #808080;
+}
+
+.caps {
+    display: inline-block;
+}
+
+.beer-rating-value {
+    display: inline-block;
+    padding-left: 3px;
+    vertical-align: text-bottom;
+}
+
+.beer-rating-count {
+    padding-top: 8px;
+    text-align: center;
+    color: #808080;
+}
+
+.cap {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-image: url("../img/cap@2x.png");
+    background-size: cover;
+}
+
+.cap-10 {
+    background-image: url("../img/cap-10@2x.png");
+}
+
+.cap-20 {
+    background-image: url("../img/cap-20@2x.png");
+}
+
+.cap-30 {
+    background-image: url("../img/cap-30@2x.png");
+}
+
+.cap-40 {
+    background-image: url("../img/cap-40@2x.png");
+}
+
+.cap-50 {
+    background-image: url("../img/cap-60@2x.png");
+}
+
+.cap-60 {
+    background-image: url("../img/cap-60@2x.png");
+}
+
+.cap-70 {
+    background-image: url("../img/cap-70@2x.png");
+}
+
+.cap-80 {
+    background-image: url("../img/cap-80@2x.png");
+}
+
+.cap-90 {
+    background-image: url("../img/cap-90@2x.png");
+}
+
+.cap-100 {
+    background-image: url("../img/cap-100@2x.png");
+}

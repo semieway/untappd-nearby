@@ -1,10 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-<ul>
+<ul class="checkins">
     {% for checkin in checkins %}
-    <li>
-        {{ checkin.name }}
+    <li class="checkin">
+        <div class="beer-label">
+            <img src="{{ checkin.label }}">
+        </div>
+        <div class="beer-info">
+            <p class="beer-name"><a href="https://untappd.com/beer/{{ checkin.id }}" class="beer-link" target="_blank">{{ checkin.name }}</a></p>
+            <p class="beer-brewery"><a href="https://untappd.com{{ checkin.brewery_page_url }}" class="brewery-link" target="_blank">{{ checkin.brewery_name }}</a></p>
+            <p class="beer-style">{{ checkin.style }}</p>
+        </div>
+        <div class="beer-rating">
+            <div class="caps" data-rating="{{ checkin.rating }}">
+                <div class="cap"></div>
+                <div class="cap"></div>
+                <div class="cap"></div>
+                <div class="cap"></div>
+                <div class="cap"></div>
+            </div>
+            <div class="beer-rating-value">({{ checkin.rating|number_format(1) }})</div>
+            <div class="beer-rating-count">{{ checkin.rating_count }} Ratings</div>
+        </div>
+        <div class="beer-meta">
+            <p class="beer-abv">{{ checkin.abv|number_format(1) }}% ABV</p>
+            <p class="beer-ibu">{{ checkin.ibu|number_format(0) }} IBU</p>
+            <p class="beer-location" title="{{ checkin.location_address }}">{{ checkin.location_name }}</p>
+        </div>
+        <div class="beer-checkin-time">
+            <time title="{{ checkin.created }}">{{ checkin.created_ago }}</time>
+        </div>
     </li>
     {% endfor %}
 </ul>
