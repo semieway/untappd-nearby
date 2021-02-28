@@ -14,9 +14,9 @@ $checkins = (empty($search)) ? $db->getCheckins($page) : $db->beerSearch($search
 foreach ($checkins as &$checkin) {
     $dt = new DateTime($checkin['created'], new DateTimeZone('UTC'));
     $dt->setTimezone(new DateTimeZone('Asia/Yekaterinburg'));
-    $checkin['created'] = $dt->format('d.m.Y H:m:s (e)');
+    $checkin['created'] = $dt->format('d.m.Y H:i:s (e)');
 
-    $checkin['created_ago'] = $db->time_elapsed_string($dt->format('Y-m-d H:m:s'));
+    $checkin['created_ago'] = $db->time_elapsed_string($dt->format('Y-m-d H:i:s'));
 }
 
 $beersCount = $db->getTotalBeersCount()[0]['count'];
