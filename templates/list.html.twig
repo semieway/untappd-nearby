@@ -43,8 +43,10 @@
             <div class="beer-rating-count">{{ checkin.rating_count|number_format(0, '.', ',') }} Ratings</div>
         </div>
         <div class="beer-meta">
-            <p class="beer-abv">{{ checkin.abv|number_format(1) }}% ABV</p>
-            <p class="beer-ibu">{{ checkin.ibu|number_format(0) }} IBU</p>
+            <div class="wrapper-meta">
+            <div class="beer-abv">{{ checkin.abv|number_format(1) }}% ABV</div>
+            <div class="beer-ibu">{{ checkin.ibu|number_format(0) }} IBU</div>
+            </div>
             {% if checkin.location_name %}
             <p class="beer-location" title="{{ checkin.location_address }}">{{ checkin.location_name }}</p>
             {% endif %}
