@@ -84,6 +84,8 @@ OFFSET $1;
             }
 
             $beerInfo = $client->getBeerInfo($beer['id']);
+            if (empty($beerInfo)) continue;
+
             $beer['rating'] = $beerInfo['rating_score'];
             $beer['rating_count'] = $beerInfo['rating_count'];
             $beer['style'] = $beerInfo['beer_style'];

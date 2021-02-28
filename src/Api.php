@@ -4,6 +4,7 @@
 namespace App;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Api
 {
@@ -39,17 +40,25 @@ class Api
         return $data['response']['checkins']['items'];
     }
 
-    public function getBeerInfo(string $beerId): array
+    public function getBeerInfo(string $beerId)
     {
-        $response = $this->client->request('GET', 'beer/info/'.$beerId, [
-           'query' => [
-               'client_id' => $this->clientId,
-               'client_secret' => $this->clientSecret,
-           ]
-        ]);
+        try {
+            $response = $this->client->request('GET', 'beer/info/' . $beerId, [
+                'query' => [
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                ]
+            ]);
+        } catch (GuzzleException $e) {
+        }
 
-        $data = json_decode($response->getBody(), true);
+        if (!empty($response)) {
+            $data = json_decode($response->getBody(), true);
 
-        return $data['response']['beer'];
+            return $data['response']['beer'];
+        } else {
+
+            return null;
+        }
     }
 }
