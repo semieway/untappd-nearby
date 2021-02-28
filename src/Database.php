@@ -66,6 +66,7 @@ OFFSET $1;
         $query = pg_query($this->connection, 'SELECT id FROM beers');
         $beerIds = array_map(function($value) { return $value['id']; }, pg_fetch_all($query, PGSQL_ASSOC));
         $checkins = array_filter($checkins, function ($checkin) use ($beerIds) { return !in_array($checkin['beer']['bid'], $beerIds); });
+        krsort($checkins);
 
         foreach ($checkins as $checkin) {
             $beer = [];
