@@ -20,6 +20,11 @@ class Database
         return pg_fetch_all($query, PGSQL_ASSOC);
     }
 
+    public function removeWantedId($id)
+    {
+        pg_delete($this->connection, 'notifications', ['id' => $id]);
+    }
+
     public function getCheckins($page = 1)
     {
         $offset = ($page - 1) * 25;

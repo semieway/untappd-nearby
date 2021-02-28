@@ -13,8 +13,8 @@ $checkins = $client->fetchCheckins();
 $db = new Database();
 $db->insertCheckins($checkins, $client);
 
-$ids = array_map(function($checkin) { return $checkin['beer']['bid']; }, $checkins);
-$result = array_filter($checkins, function($checkin) use ($ids) { in_array($checkin['beer']['bid'], $ids); });
+$ids = array_map(function ($id) { return $id['id']; }, $db->getWantedIds());
+$result = array_filter($checkins, function($checkin) use ($ids) { return in_array($checkin['beer']['bid'], $ids); });
 
 if (!empty($result)) {
     $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465))
@@ -29,7 +29,7 @@ if (!empty($result)) {
     foreach ($result as $checkin) {
         $message = (new \Swift_Message('Beer «'.$checkin['beer']['beer_name'].'» checkin nearby!'))
             ->setFrom('semieway@gmail.com', 'Untappd')
-            ->setTo(['semieway@gmail.com'])
+            ->setTo(['semieway@gmail.com', 'fllwurdrmss@gmail.com'])
             ->setBody(
                 $twig->render(
                     'mail.html.twig',
@@ -40,4 +40,6 @@ if (!empty($result)) {
 
         $mailer->send($message);
     }
+
+    $db->removeWantedId($checkin['beer']['bid']);
 }
