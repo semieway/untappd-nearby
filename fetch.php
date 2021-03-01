@@ -19,7 +19,7 @@ $result = array_filter($checkins, function($checkin) use ($ids) { return in_arra
 if (!empty($result)) {
     $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465))
         ->setUsername(getenv('EMAIL_USERNAME'))
-        ->setPassword('EMAIL_PASSWORD')
+        ->setPassword(getenv('EMAIL_PASSWORD'))
         ->setEncryption('SSL');
     $mailer = new \Swift_Mailer($transport);
 
