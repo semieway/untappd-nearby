@@ -16,13 +16,13 @@ class Database
 
     public function getWantedIds()
     {
-        $query = pg_query($this->connection, 'SELECT id FROM notifications');
+        $query = pg_query($this->connection, 'SELECT id FROM wanted');
         return pg_fetch_all($query, PGSQL_ASSOC);
     }
 
-    public function removeWantedId($id)
+    public function removeWantedBeer($id)
     {
-        pg_delete($this->connection, 'notifications', ['id' => $id]);
+        pg_delete($this->connection, 'wanted', ['id' => $id]);
     }
 
     public function getCheckins($page = 1)
@@ -143,6 +143,67 @@ ORDER BY
         $result = pg_execute($this->connection, 'beer_search', ['%'.$search.'%']);
 
         return pg_fetch_all($result, PGSQL_ASSOC);
+    }
+
+    public function getWantedBeers() {
+        $result = pg_query($this->connection,'
+SELECT 
+    b.id, 
+    b.name,
+    b.rating, 
+    b.rating_count, 
+    b.label, 
+    b.style, 
+    b.abv, 
+    b.ibu,
+    b.created, 
+    br.id AS brewery_id,
+    br.name AS brewery_name
+FROM
+    wanted AS b 
+LEFT JOIN 
+    breweries AS br ON b.brewery_id = br.id
+ORDER BY 
+    created DESC
+');
+
+        return pg_fetch_all($result, PGSQL_ASSOC);
+    }
+
+    public function insertWantedBeer($id, Api $client)
+    {
+        $query = pg_query($this->connection, 'SELECT id FROM wanted');
+        $beerIds = array_map(function($value) { return $value['id']; }, pg_fetch_all($query, PGSQL_ASSOC));
+        if (in_array($id, $beerIds)) return true;
+
+        $beerInfo = $client->getBeerInfo($id);
+        if (empty($beerInfo)) return false;
+
+        $beer = [];
+        $brewery = [];
+
+        $beer['id'] = $beerInfo['bid'];
+        $beer['name'] = $beerInfo['beer_name'];
+        $beer['brewery_id'] = $beerInfo['brewery']['brewery_id'];
+        if (!empty($beerInfo['beer_label_hd'])) {
+            $beer['label'] = $beerInfo['beer_label_hd'];
+        } else {
+            $beer['label'] = $beerInfo['beer_label'];
+        }
+
+        $beer['rating'] = $beerInfo['rating_score'];
+        $beer['rating_count'] = $beerInfo['rating_count'];
+        $beer['style'] = $beerInfo['beer_style'];
+        $beer['abv'] = $beerInfo['beer_abv'];
+        $beer['ibu'] = $beerInfo['beer_ibu'];
+
+        $brewery['id'] = $beerInfo['brewery']['brewery_id'];
+        $brewery['name'] = $beerInfo['brewery']['brewery_name'];
+
+        pg_insert($this->connection, 'breweries', $brewery);
+        pg_insert($this->connection, 'wanted', $beer);
+
+        return true;
     }
 
     public function time_elapsed_string($datetime, $full = false) {

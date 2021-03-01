@@ -25,7 +25,6 @@ $loader = new FilesystemLoader(__DIR__ . '/templates');
 $twig = new Environment($loader);
 
 echo $twig->render('list.html.twig', [
-    'title' => 'Untappd Ekaterinburg',
     'checkins' => $checkins,
     'current' => $page,
     'count' => intval($beersCount),

@@ -27,9 +27,9 @@ if (!empty($result)) {
     $twig = new Environment($loader);
 
     foreach ($result as $checkin) {
-        $message = (new \Swift_Message('Beer «'.$checkin['beer']['beer_name'].'» checkin nearby!'))
+        $message = (new \Swift_Message('«'.$checkin['beer']['beer_name'].'» checkin nearby!'))
             ->setFrom('semieway@gmail.com', 'Untappd')
-            ->setTo(['semieway@gmail.com', 'fllwurdrmss@gmail.com'])
+            ->setTo(['semieway@gmail.com'])
             ->setBody(
                 $twig->render(
                     'mail.html.twig',
@@ -41,5 +41,5 @@ if (!empty($result)) {
         $mailer->send($message);
     }
 
-    $db->removeWantedId($checkin['beer']['bid']);
+    $db->removeWantedBeer($checkin['beer']['bid']);
 }

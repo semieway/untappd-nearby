@@ -18,6 +18,20 @@
         </li>
     </ul>
 {% endif %}
+{% if admin_form %}
+<div class="admin-form">
+    <form method="POST" action="admin.php">
+        <label>
+            Enter beer ID or Untappd link
+            <input type="text" name="id">
+        </label>
+        <button class="btn btn-secondary" type="submit">Add</button>
+        {% if error %}
+            <p class="form-error">{{ error }}</p>
+        {% endif %}
+    </form>
+</div>
+{% endif %}
 <ul class="checkins">
     {% for checkin in checkins %}
     <li class="checkin">
@@ -55,6 +69,11 @@
             <i class="far fa-clock"></i>
             <time title="{{ checkin.created }}">{{ checkin.created_ago }}</time>
         </div>
+        {% if admin_form %}
+        <div class="beer-remove" data-id="{{ checkin.id }}">
+            <i class="fas fa-trash-alt"></i>
+        </div>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

@@ -20,7 +20,7 @@ body {
 
 .form-control:focus {
     border-color: transparent !important;
-    box-shadow: 0 0 0 0.25rem rgba(255, 153, 51, 0.5);
+    box-shadow: 0 0 0 0.25rem rgba(92,99,106, 0.5);
 }
 
 .checkins {
@@ -374,5 +374,58 @@ footer {
 
     .copyright {
         padding-right: 0;
+    }
+}
+
+.admin-form {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.admin-form label {
+    color: #808080;
+}
+
+.admin-form input {
+    display: block;
+    padding: 3px;
+    margin-top: 5px;
+}
+
+.admin-form button {
+    padding: 5px 17px;
+    margin-left: 5px;
+}
+
+.form-error {
+    font-size: 18px;
+    margin-top: 10px;
+    color: #cc0000;
+}
+
+.beer-remove {
+    width: 50px;
+    height: 50px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 50px;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.beer-remove i {
+    color: #808080;
+}
+
+@media (max-width: 768px) {
+    .beer-remove {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .beer-remove i::after {
+        content: 'Remove';
+        margin-left: 8px;
     }
 }

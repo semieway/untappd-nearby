@@ -1,3 +1,8 @@
+// Prevent form resubmission.
+if ( window.history.replaceState ) {
+   window.history.replaceState( null, null, window.location.href );
+}
+
 $(document).ready(function() {
 
    // Beer rating caps.
@@ -14,6 +19,18 @@ $(document).ready(function() {
             rating = 0;
          }
       });
+   });
+
+   // Admin page remove beer buttons.
+   $('.beer-remove').on('click', function() {
+      let isRemove = confirm('Please confirm beer removal');
+
+      if (isRemove) {
+         let id = $(this).data('id');
+         $.post('admin.php', { remove_id: id }, function(data) {
+            location.reload();
+         });
+      }
    });
 
 });
