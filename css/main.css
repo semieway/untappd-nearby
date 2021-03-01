@@ -1,5 +1,16 @@
 body {
     font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header, footer {
+    flex-shrink: 0;
+}
+
+#content {
+    flex-grow: 1;
 }
 
 .navbar.bg-light {
@@ -20,7 +31,7 @@ body {
 
 .form-control:focus {
     border-color: transparent !important;
-    box-shadow: 0 0 0 0.25rem rgba(92,99,106, 0.5);
+    box-shadow: 0 0 0 0.15rem rgba(92,99,106, 0.5);
 }
 
 .checkins {

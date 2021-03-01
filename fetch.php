@@ -29,7 +29,7 @@ if (!empty($result)) {
     foreach ($result as $checkin) {
         $message = (new \Swift_Message('«'.$checkin['beer']['beer_name'].'» checkin nearby!'))
             ->setFrom('semieway@gmail.com', 'Untappd')
-            ->setTo(['semieway@gmail.com'])
+            ->setTo(['semieway@gmail.com', 'fllwurdrmss@gmail.com'])
             ->setBody(
                 $twig->render(
                     'mail.html.twig',
