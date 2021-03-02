@@ -25,6 +25,12 @@ class Database
         pg_delete($this->connection, 'wanted', ['id' => $id]);
     }
 
+    public function getLastCheckin()
+    {
+        $query = pg_query($this->connection, 'SELECT last_checkin FROM beers ORDER BY created DESC LIMIT 1');
+        return pg_fetch_all($query, PGSQL_ASSOC)[0]['last_checkin'];
+    }
+
     public function getCheckins($page = 1)
     {
         $offset = ($page - 1) * 25;
@@ -70,10 +76,15 @@ OFFSET $1;
     {
         $query = pg_query($this->connection, 'SELECT id FROM beers');
         $beerIds = array_map(function($value) { return $value['id']; }, pg_fetch_all($query, PGSQL_ASSOC));
-        $checkins = array_filter($checkins, function ($checkin) use ($beerIds) { return !in_array($checkin['beer']['bid'], $beerIds); });
         krsort($checkins);
 
         foreach ($checkins as $checkin) {
+            if (in_array($checkin['beer']['bid'], $beerIds)) {
+                pg_prepare($this->connection, 'update_beer', 'UPDATE beers SET created = $1, last_checkin = $2 WHERE id = $3');
+                pg_execute($this->connection, 'update_beer', [DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.u'), $checkin['checkin_id'], $checkin['beer']['bid']]);
+                continue;
+            }
+
             $beer = [];
             $brewery = [];
             $location = [];
@@ -82,6 +93,7 @@ OFFSET $1;
             $beer['name'] = $checkin['beer']['beer_name'];
             $beer['brewery_id'] = $checkin['brewery']['brewery_id'];
             $beer['location_id'] = $checkin['venue']['venue_id'];
+            $beer['last_checkin'] = $checkin['checkin_id'];
             if (!empty($checkin['beer']['beer_label_hd'])) {
                 $beer['label'] = $checkin['beer']['beer_label_hd'];
             } else {

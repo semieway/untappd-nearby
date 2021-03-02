@@ -23,7 +23,7 @@ class Api
         ]);
     }
 
-    public function fetchCheckins(): array
+    public function fetchCheckins($minCheckinId = ''): array
     {
         $response = $this->client->request('GET', 'thepub/local', [
             'query' => [
@@ -32,6 +32,7 @@ class Api
                 'lat' => '56.838729',
                 'lng' => '60.603284',
                 'radius' => '25',
+                'min_id' => $minCheckinId
             ]
         ]);
 

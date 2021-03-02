@@ -8,9 +8,10 @@ use Twig\Loader\FilesystemLoader;
 require_once 'vendor/autoload.php';
 
 $client = new Api();
-$checkins = $client->fetchCheckins();
-
 $db = new Database();
+$lastCheckin = $db->getLastCheckin();
+
+$checkins = $client->fetchCheckins($lastCheckin);
 $db->insertCheckins($checkins, $client);
 
 $wantedBeers = array_column($db->getWantedBeers(), null, 'id');
