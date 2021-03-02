@@ -62,4 +62,18 @@ class Api
             return null;
         }
     }
+
+    public function getWishlist($username)
+    {
+        $response = $this->client->request('GET', 'user/wishlist/'.$username, [
+           'query' => [
+               'client_id' => $this->clientId,
+               'client_secret' => $this->clientSecret
+           ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        return $data['response']['beers']['items'];
+    }
 }
