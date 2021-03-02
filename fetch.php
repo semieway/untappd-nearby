@@ -27,7 +27,7 @@ if (!empty($result)) {
     $twig = new Environment($loader);
 
     foreach ($result as $checkin) {
-        $message = (new \Swift_Message('«'.$checkin['beer']['beer_name'].'» checkin nearby!'))
+        $message = (new \Swift_Message('«'.$checkin['beer']['beer_name'].'» just checkined nearby!'))
             ->setFrom('semieway@gmail.com', 'Untappd')
             ->setTo(['semieway@gmail.com', 'fllwurdrmss@gmail.com'])
             ->setBody(
