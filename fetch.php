@@ -13,8 +13,39 @@ $checkins = $client->fetchCheckins();
 $db = new Database();
 $db->insertCheckins($checkins, $client);
 
-$ids = array_map(function ($id) { return $id['id']; }, $db->getWantedIds());
-$result = array_filter($checkins, function($checkin) use ($ids) { return in_array($checkin['beer']['bid'], $ids); });
+$wantedBeers = array_column($db->getWantedBeers(), null, 'id');
+$wantedLocations = array_column($db->getWantedLocations(), null, 'id');
+$ids = array_column($wantedBeers, 'id');
+$result = array_filter($checkins, function($checkin) use ($ids, &$wantedBeers) {
+    if (in_array($checkin['beer']['bid'], $ids)) {
+        unset($wantedBeers[$checkin['beer']['bid']]);
+        return true;
+    } else {
+        return false;
+    }
+});
+
+foreach ($wantedBeers as $wantedBeer) {
+    $page = file_get_contents('https://untappd.com/beer/'.$wantedBeer['id']);
+    @$doc = new DOMDocument();
+    @$doc->loadHTML($page);
+
+    $xpath = new DOMXPath($doc);
+    $locations = $xpath->query("//p[@class='purchased']/a/@href");
+    $count = $locations->count();
+    for ($i = 0; $i < $count; $i++) {
+        $id = explode('/', $locations->item($i)->nodeValue)[3];
+        if (isset($wantedLocations[$id])) {
+            $checkin = [];
+            $checkin['beer']['bid'] = $wantedBeer['id'];
+            $checkin['beer']['beer_name'] = $wantedBeer['name'];
+            $checkin['brewery']['brewery_name'] = $wantedBeer['brewery_name'];
+            $checkin['venue']['venue_name'] = $wantedLocations[$id]['name'];
+            $checkin['venue']['location']['venue_address'] = $wantedLocations[$id]['address'];
+            $result[] = $checkin;
+        }
+    }
+}
 
 if (!empty($result)) {
     $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465))
@@ -39,7 +70,7 @@ if (!empty($result)) {
             );
 
         $mailer->send($message);
-    }
 
-    $db->removeWantedBeer($checkin['beer']['bid']);
+        $db->removeWantedBeer($checkin['beer']['bid']);
+    }
 }

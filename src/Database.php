@@ -14,9 +14,9 @@ class Database
         $this->connection = pg_connect(getenv('DATABASE_URL'));
     }
 
-    public function getWantedIds()
+    public function getWantedLocations()
     {
-        $query = pg_query($this->connection, 'SELECT id FROM wanted');
+        $query = pg_query($this->connection, 'SELECT id, name, address FROM locations WHERE wanted=true');
         return pg_fetch_all($query, PGSQL_ASSOC);
     }
 

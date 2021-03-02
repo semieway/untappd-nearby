@@ -3,5 +3,5 @@
 <br>
 at <b>{{ checkin.venue.venue_name }}!</b> {% if checkin.venue.location.venue_address %}({{ checkin.venue.location.venue_address }}) {% endif %}
 <br>
-<a href="https://untappd.com/c/{{ checkin.checkin_id }}">Untappd Link</a>
+<a href="{% if checkin.checkin_id %}https://untappd.com/c/{{ checkin.checkin_id }}{% else %}https://untappd.com/beer/{{ checkin.beer.bid }}{% endif %}">Untappd Link</a>
 </p>
