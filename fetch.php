@@ -43,6 +43,7 @@ foreach ($wantedBeers as $wantedBeer) {
             $checkin['venue']['venue_name'] = $wantedLocations[$id]['name'];
             $checkin['venue']['location']['venue_address'] = $wantedLocations[$id]['address'];
             $result[] = $checkin;
+            break;
         }
     }
 }
