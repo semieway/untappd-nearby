@@ -27,6 +27,7 @@ $result = array_filter($checkins, function($checkin) use ($ids, &$wantedBeers) {
 });
 
 foreach ($wantedBeers as $wantedBeer) {
+    $locIds = (empty($wantedBeer['locations'])) ? [] : explode(',', $wantedBeer['locations']);
     $page = file_get_contents('https://untappd.com/beer/'.$wantedBeer['id']);
     @$doc = new DOMDocument();
     @$doc->loadHTML($page);
@@ -36,7 +37,8 @@ foreach ($wantedBeers as $wantedBeer) {
     $count = $locations->count();
     for ($i = 0; $i < $count; $i++) {
         $id = explode('/', $locations->item($i)->nodeValue)[3];
-        if (isset($wantedLocations[$id])) {
+        if (isset($wantedLocations[$id]) && !in_array($id, $locIds)) {
+            $locIds[] = $id;
             $checkin = [];
             $checkin['beer']['bid'] = $wantedBeer['id'];
             $checkin['beer']['beer_name'] = $wantedBeer['name'];
@@ -44,6 +46,8 @@ foreach ($wantedBeers as $wantedBeer) {
             $checkin['venue']['venue_name'] = $wantedLocations[$id]['name'];
             $checkin['venue']['location']['venue_address'] = $wantedLocations[$id]['address'];
             $result[] = $checkin;
+
+            $db->updateWantedBeerLocations($wantedBeer['id'], implode(',', $locIds));
             break;
         }
     }
@@ -72,7 +76,5 @@ if (!empty($result)) {
             );
 
         $mailer->send($message);
-
-        $db->removeWantedBeer($checkin['beer']['bid']);
     }
 }

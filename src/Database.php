@@ -31,6 +31,12 @@ class Database
         return pg_fetch_all($query, PGSQL_ASSOC)[0]['last_checkin'];
     }
 
+    public function updateWantedBeerLocations($id, $locations)
+    {
+        pg_prepare($this->connection, 'update_wanted_beer_locations', 'UPDATE wanted SET locations = $1 WHERE id = $2');
+        pg_execute($this->connection, 'update_wanted_beer_locations', [$locations, $id]);
+    }
+
     public function getCheckins($page = 1)
     {
         $offset = ($page - 1) * 25;
@@ -80,8 +86,8 @@ OFFSET $1;
 
         foreach ($checkins as $checkin) {
             if (in_array($checkin['beer']['bid'], $beerIds)) {
-                pg_prepare($this->connection, 'update_beer', 'UPDATE beers SET created = $1, last_checkin = $2 WHERE id = $3');
-                pg_execute($this->connection, 'update_beer', [DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.u'), $checkin['checkin_id'], $checkin['beer']['bid']]);
+                pg_prepare($this->connection, 'update_beer'.$checkin['beer']['bid'], 'UPDATE beers SET created = $1, last_checkin = $2 WHERE id = $3');
+                pg_execute($this->connection, 'update_beer'.$checkin['beer']['bid'], [DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.u'), $checkin['checkin_id'], $checkin['beer']['bid']]);
                 continue;
             }
 
@@ -169,6 +175,7 @@ SELECT
     b.abv, 
     b.ibu,
     b.created, 
+    b.locations,
     br.id AS brewery_id,
     br.name AS brewery_name
 FROM
