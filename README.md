@@ -1,5 +1,5 @@
 # Untappd Nearby
-<a href="https://untappd-nearby.herokuapp.com/" target="_blank"></a>  
+https://untappd-nearby.herokuapp.com/
   
 Untappd latest check-in list based on location (currently Russia, Ekaterinburg).  
 Also, this app can notify you about beers from wishlist that were check-in/purchased nearby.  
