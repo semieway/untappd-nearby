@@ -91,12 +91,6 @@ OFFSET $1;
         krsort($checkins);
 
         foreach ($checkins as $checkin) {
-            if (in_array($checkin['beer']['bid'], $beerIds)) {
-                pg_prepare($this->connection, 'update_beer'.$checkin['beer']['bid'], 'UPDATE beers SET created = $1, last_checkin = $2 WHERE id = $3');
-                pg_execute($this->connection, 'update_beer'.$checkin['beer']['bid'], [DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.u'), $checkin['checkin_id'], $checkin['beer']['bid']]);
-                continue;
-            }
-
             $beer = [];
             $brewery = [];
             $location = [];
@@ -130,7 +124,12 @@ OFFSET $1;
 
             pg_insert($this->connection, 'breweries', $brewery);
             pg_insert($this->connection, 'locations', $location);
-            pg_insert($this->connection, 'beers', $beer);
+            if (in_array($checkin['beer']['bid'], $beerIds)) {
+                $beer['created'] = DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.u');
+                pg_update($this->connection, 'beers', $beer, ['id' => $beer['id']]);
+            } else {
+                pg_insert($this->connection, 'beers', $beer);
+            }
         }
     }
 
