@@ -35,7 +35,7 @@ foreach ($users as $user) {
         $found = FALSE;
         $locIds = (empty($storedBeer['locations'])) ? [] : explode(',', $storedBeer['locations']);
 
-        if (isset($storedBeer['checkin_id'])) {
+        if (isset($storedBeer['checkin_id']) && !in_array($storedBeer['location_id'], $locIds)) {
             $found = TRUE;
             $locIds[] = $storedBeer['location_id'];
             $checkin['venue']['venue_name'] = $storedBeer['location_name'];
