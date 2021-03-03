@@ -18,20 +18,6 @@
         </li>
     </ul>
 {% endif %}
-{% if admin_form %}
-<div class="admin-form">
-    <form method="POST" action="admin.php">
-        <label>
-            Enter beer ID or Untappd link
-            <input type="text" name="id">
-        </label>
-        <button class="btn btn-secondary" type="submit">Add</button>
-        {% if error %}
-            <p class="form-error">{{ error }}</p>
-        {% endif %}
-    </form>
-</div>
-{% endif %}
 <ul class="checkins">
     {% for checkin in checkins %}
     <li class="checkin">
