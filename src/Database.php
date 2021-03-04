@@ -125,7 +125,7 @@ OFFSET $1;
             pg_insert($this->connection, 'breweries', $brewery);
             pg_insert($this->connection, 'locations', $location);
             if (in_array($checkin['beer']['bid'], $beerIds)) {
-                $beer['created'] = DateTime::createFromFormat('U.u', microtime(true))->format('Y-m-d H:i:s.u');
+                $beer['created'] = DateTime::createFromFormat('U.u', microtime(true))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s.u');
                 pg_update($this->connection, 'beers', $beer, ['id' => $beer['id']]);
             } else {
                 pg_insert($this->connection, 'beers', $beer);
