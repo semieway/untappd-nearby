@@ -20,7 +20,7 @@
 {% endif %}
 <ul class="checkins">
     {% for checkin in checkins %}
-    <li class="checkin">
+    <li class="checkin" data-time="{{ checkin.created }}">
         <div class="wrapper">
         <div class="beer-label">
             <a href="https://untappd.com/beer/{{ checkin.id }}" target="_blank"><img src="{{ checkin.label }}"></a>
@@ -53,7 +53,7 @@
         </div>
         <div class="beer-checkin-time">
             <i class="far fa-clock"></i>
-            <time title="{{ checkin.created }}">{{ checkin.created_ago }}</time>
+            <time title="{{ checkin.created_title }}">{{ checkin.created_ago }}</time>
         </div>
         {% if admin_form %}
         <div class="beer-remove" data-id="{{ checkin.id }}">

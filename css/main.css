@@ -36,7 +36,7 @@ header, footer {
 
 .checkins {
     list-style: none;
-    margin-top: 40px;
+    margin-top: 25px;
     padding-left: 50px;
 }
 
@@ -61,6 +61,16 @@ header, footer {
         flex-direction: column;
         padding-bottom: 5px;
     }
+}
+
+.date-message {
+    text-align: center;
+    color: #808080;
+    margin-top: 25px;
+}
+
+.date-message .fa-calendar {
+    padding-right: 3px;
 }
 
 .wrapper {
@@ -323,7 +333,7 @@ header, footer {
 
 .pagination {
     margin-top: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     padding-left: 50px;
 }
 
@@ -361,6 +371,7 @@ footer {
     align-items: flex-end;
     text-align: center;
     padding-right: 50px;
+    margin-top: 20px;
 }
 
 .copyright {

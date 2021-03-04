@@ -16,4 +16,37 @@ $(document).ready(function() {
       });
    });
 
+   // Date delimiters in the checkin list.
+   let todayDate = new Date().toDateString();
+   let yesterday = new Date();
+   yesterday.setDate(yesterday.getDate() - 1);
+   let yesterdayDate = yesterday.toDateString();
+
+   let $checkins = $('.checkin');
+   let currentDate;
+
+   $checkins.each(function() {
+      let date = new Date($(this).data('time')).toDateString();
+      let dateName;
+
+      if (date === currentDate) {
+         return;
+      } else {
+         if (date === todayDate) {
+            dateName = 'Today';
+         } else if (date === yesterdayDate) {
+            dateName = 'Yesterday';
+         } else {
+            dateName = date.slice(0, -4);
+         }
+
+         $div = $('<div/>')
+             .addClass('date-message')
+             .html(`<i class="far fa-calendar"></i> ${dateName}`);
+         $(this).prev().css('border-bottom', 'none');
+         $(this).before($div);
+      }
+
+      currentDate = date;
+   });
 });
