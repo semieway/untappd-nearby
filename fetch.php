@@ -109,29 +109,3 @@ foreach ($users as $user) {
         $db->removeWantedBeer($removedBeer, $user['id']);
     }
 }
-
-if (!empty($result)) {
-    $transport = (new \Swift_SmtpTransport('smtp.gmail.com', 465))
-        ->setUsername(getenv('EMAIL_USERNAME'))
-        ->setPassword(getenv('EMAIL_PASSWORD'))
-        ->setEncryption('SSL');
-    $mailer = new \Swift_Mailer($transport);
-
-    $loader = new FilesystemLoader(__DIR__ . '/templates');
-    $twig = new Environment($loader);
-
-    foreach ($result as $checkin) {
-        $message = (new \Swift_Message('«'.$checkin['beer']['beer_name'].'» just checkined nearby!'))
-            ->setFrom('semieway@gmail.com', 'Untappd')
-            ->setTo(['semieway@gmail.com', 'fllwurdrmss@gmail.com'])
-            ->setBody(
-                $twig->render(
-                    'mail.html.twig',
-                    ['checkin' => $checkin]
-                ),
-                'text/html'
-            );
-
-        $mailer->send($message);
-    }
-}
