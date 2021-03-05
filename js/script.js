@@ -17,6 +17,9 @@ $(document).ready(function() {
    });
 
    // Date delimiters in the checkin list.
+   let currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+   document.cookie = 'timezone='+currentTimezone;
+
    let todayDate = new Date().toDateString();
    let yesterday = new Date();
    yesterday.setDate(yesterday.getDate() - 1);
